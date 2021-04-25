@@ -1,0 +1,49 @@
+@startuml uml
+
+rectangle project {
+    folder "/node_modules" as project_node_modules {
+        node "/..." as project_packages
+    }
+    folder "/src/..." as project_src {
+        file "*.js" as project_js
+        file "*.css" as project_css
+        file "logo.svg" as project_logo
+    }
+    folder "/public/..." as project_public {
+        file "index.html" as project_index
+        file "/favicon.ico" as project_favicon
+        file "/logo192.png" as project_logo192
+        file "/manifest.json" as project_manifest
+    }
+}
+
+card localhost:3000 {
+    file "index.html" as build_index #geen 
+    file "/favicon.ico" as build_favicon
+    file "/logo192.png" as build_logo192
+    file "/manifest.json" as build_manifest
+    file "/static/js/bundle.js" as build_bundle
+    file "/static/js/vendor~main.chunk.js" as build_vendor
+    file "/static/js/main.chunk.js" as build_main
+    file "/static/media/logo.svg" as build_logo
+
+    build_index <-- build_favicon:link
+    build_index <-- build_logo192:link
+    build_index <-- build_manifest:link
+    build_index <-r- build_bundle:script
+    build_index <-- build_vendor:script
+    build_index <-- build_main:script
+    build_index <-- build_logo:img
+}
+
+build_vendor <-- project_packages 
+build_main <-- project_js
+build_logo <-- project_logo
+build_index <-- project_css
+' файл "public/index.html" - шаблон для "index.html"
+build_index <-- project_index
+build_favicon <-- project_favicon
+build_logo192 <-- project_logo192
+build_manifest <-- project_manifest
+
+@end
